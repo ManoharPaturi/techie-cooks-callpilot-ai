@@ -240,7 +240,7 @@ assembled from it on Oct 8 through reviewed pull requests, one per component, ea
 **Live Application:** N/A. CallPilot is local-first by design: it listens to private calls, so it runs only on the user's own Mac
 and is never hosted online.
 
-To try it, follow [Setup and Usage](#setup-and-usage) and open `http://127.0.0.1:8765`.
+To try it, run `./start` (see [Setup and Usage](#setup-and-usage)). The dashboard opens at `http://127.0.0.1:8765`.
 - Pick a demo caller (fake bank OTP, fake CBI "digital arrest", a client call, or a prompt-injection attempt) and press **Play caller audio**.
 - Watch the alerts and the hang-up banner, ask the assistant a question, then **End call** to see the Gemma 4 summary and
   download the call report.
@@ -284,33 +284,53 @@ with a note-grounded answer, and the Gemma 4 after-call summary and report.
 
 ## Setup and Usage
 
-### Prerequisites
-
-- An Apple Silicon Mac (tested on an 8 GB MacBook Air M3, macOS) and Chrome
-- [Homebrew](https://brew.sh), then: `brew install ollama ffmpeg uv node cmake`
-- About 7 GB of free disk space for the models
-- Optional, for live calls: an iPhone with Personal Hotspot
-
-### Installation
+### Quick start (one command)
 
 ```bash
 git clone https://github.com/ManoharPaturi/techie-cooks-callpilot-ai.git
 cd techie-cooks-callpilot-ai
+./start
+```
 
-# local models
-ollama pull qwen3:1.7b      # live scam checks + assistant
-ollama pull gemma4:e2b      # after-call summary (Gemma 4)
+On a Mac you can instead **double-click `Start CallPilot.command`** in Finder. It opens Terminal and does the same thing.
+Stop with `./stop`, double-click `Stop CallPilot.command`, or close the window.
 
-# whisper.cpp next to the repo (or set WHISPER_CPP_DIR)
-git clone https://github.com/ggml-org/whisper.cpp ../vendor/whisper.cpp
-(cd ../vendor/whisper.cpp && sh models/download-ggml-model.sh base.en \
+`./start` is safe to run every time. On the **first run** it sets everything up (10–20 minutes, mostly downloads):
+1. installs any missing tools: `uv`, `node`, `cmake` and `ollama` via Homebrew on a Mac, apt / official installers on Linux.
+   It asks before installing anything.
+2. downloads and builds **whisper.cpp** (pinned to the version we tested) into `./vendor`, plus the Whisper `base.en` model
+3. pulls the local models **`qwen3:1.7b`** and **`gemma4:e2b`** (about 6 GB, retried if the network drops)
+4. installs the Python and frontend dependencies and builds the dashboard
+
+Every later run skips whatever is already done. It then starts speech-to-text, the models and the app on `127.0.0.1` and
+opens **http://127.0.0.1:8765** in Chrome. If the Mac is on an iPhone Personal Hotspot, live phone calls are switched on
+automatically.
+
+The setup alone is `./scripts/setup.sh`, and `./scripts/preflight.sh` checks tools, models, ports and demo files.
+
+### Prerequisites
+
+| | Needed |
+|---|---|
+| Computer | **macOS on Apple Silicon** (tested: 8 GB MacBook Air M3). Linux x86-64/arm64 works too (setup verified in CI). Windows: use WSL2 with Ubuntu. |
+| Package manager | macOS: [Homebrew](https://brew.sh) (the only thing to install by hand). Linux: `apt` and `sudo`. |
+| Disk / memory | ~8 GB free disk, 8 GB RAM minimum (16 GB recommended) |
+| Browser | Chrome or another Chromium browser (microphone + AudioWorklet) |
+| Optional | An iPhone with Personal Hotspot, for live phone calls |
+
+No accounts or API keys are needed. After setup, everything works offline.
+
+### Manual installation (what `./start` automates)
+
+```bash
+brew install uv node cmake ollama              # macOS
+ollama pull qwen3:1.7b && ollama pull gemma4:e2b
+git clone https://github.com/ggml-org/whisper.cpp vendor/whisper.cpp
+(cd vendor/whisper.cpp && git checkout 60c0be6 && sh models/download-ggml-model.sh base.en \
   && cmake -B build && cmake --build build -j --target whisper-server)
-
-# app dependencies
 uv sync
-(cd frontend && npm install && npm run build)
-
-./scripts/preflight.sh      # checks tools, models, ports and demo files
+(cd frontend && npm ci && npm run build)
+./scripts/start.sh
 ```
 
 ### Environment Variables
@@ -332,18 +352,19 @@ No API keys are needed.
 ### Running the Project
 
 ```bash
-./scripts/start.sh          # starts whisper.cpp + Ollama if needed, then the app on 127.0.0.1:8765
-./scripts/stop.sh
+./start                     # set up if needed, start everything, open the dashboard
+./stop                      # stop everything CallPilot started
 ./scripts/verify_local.sh   # proves 8765 / 8080 / 11434 listen on loopback only
-uv run pytest               # 142 tests; the model tests run when Ollama and whisper.cpp are up
+uv run pytest               # 142 tests; the model tests run while CallPilot is running
 ```
 
-Or run `./scripts/make_apps.sh` once and double-click **Start CallPilot** / **Stop CallPilot**.
+If double-clicking a `.command` file opens a code editor instead of Terminal, run `./scripts/make_apps.sh` once. It creates
+real **Start CallPilot** / **Stop CallPilot** apps next to the repo folder.
 
 ### Usage
 
 **Demo (replay):**
-1. Open `http://127.0.0.1:8765` in Chrome. Tick consent → **Start session**.
+1. Run `./start` (the dashboard opens in Chrome). Tick consent → **Start session**.
 2. Choose *Fake bank "fraud team" asks for your OTP* → **Play caller audio**. Alerts appear under the caller's lines, and after the
    OTP demand and the threat the **hang-up banner** appears.
 3. Ask the assistant "do I have to share?". It answers privately.

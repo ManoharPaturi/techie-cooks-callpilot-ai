@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Stops CallPilot (only the processes it started).   Usage: ./stop
+"$(dirname "$0")/scripts/stop.sh"
+pkill -f 'tail -n 0 -f .run/app.log' 2>/dev/null || true

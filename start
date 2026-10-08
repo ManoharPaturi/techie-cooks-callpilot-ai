@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# CallPilot AI: one command to set up (first run) and start everything.   Usage: ./start
+exec "$(dirname "$0")/scripts/launch.sh" "$@"

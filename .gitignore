@@ -20,3 +20,6 @@ recordings/
 .DS_Store
 .run/
 frontend/dist-guest/
+# whisper.cpp built by scripts/setup.sh
+vendor/
+.setup-whisper.log

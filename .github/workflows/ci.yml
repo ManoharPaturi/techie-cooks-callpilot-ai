@@ -34,3 +34,28 @@ jobs:
         run: |
           if [ ! -f frontend/package.json ]; then echo "no frontend yet"; exit 0; fi
           cd frontend && npm ci && npm run build
+
+  setup:
+    name: One-click setup (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run scripts/setup.sh on a fresh machine (models skipped, they are ~6 GB)
+        env:
+          CALLPILOT_SKIP_MODELS: "1"
+          CALLPILOT_YES: "1"
+        run: ./scripts/setup.sh
+      - name: whisper.cpp server starts and transcribes the demo call
+        run: |
+          W=vendor/whisper.cpp
+          $W/build/bin/whisper-server --host 127.0.0.1 --port 8080 -m $W/models/ggml-base.en.bin > whisper.log 2>&1 &
+          for i in $(seq 1 60); do curl -s -m 1 127.0.0.1:8080/ >/dev/null && break; sleep 1; done
+          export PATH="$HOME/.local/bin:$PATH"
+          uv run pytest -q tests/test_smoke.py tests/test_boundaries.py

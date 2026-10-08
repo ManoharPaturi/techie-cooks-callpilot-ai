@@ -403,6 +403,8 @@ real **Start CallPilot** / **Stop CallPilot** apps next to the repo folder.
 
 **Devpost Project:** _link will be added after submission_
 
+**DEV write-up:** [CallPilot AI on DEV](https://dev.to/manohar_paturi_2e0c6213f4/callpilot-ai-5b1m)
+
 ## Credits and License
 
 ### Credits

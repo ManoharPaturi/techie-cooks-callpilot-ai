@@ -130,7 +130,7 @@ flowchart LR
 
 | Category        | Technologies |
 | --------------- | ------------ |
-| Frontend        | React 18, TypeScript, Vite, AudioWorklet, WebRTC, self-hosted fonts (Bricolage Grotesque, IBM Plex) |
+| Frontend        | React 18, TypeScript, Vite, AudioWorklet, WebRTC, self-hosted fonts (Bricolage Grotesque,IBM Plex) |
 | Backend         | Python 3.11+, FastAPI, Uvicorn, httpx, Pydantic, NumPy, SciPy (`resample_poly`), ONNX Runtime |
 | Database        | N/A (transcripts, notes and alerts stay in memory only) |
 | AI / ML         | Qwen3 1.7B (live safety, assistant, after-call summary), **Gemma 4 E2B** (optional after-call summary), Whisper base.en via whisper.cpp, Silero VAD |

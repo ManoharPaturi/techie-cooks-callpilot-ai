@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    name: Backend (lint + tests)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: uv sync
+      - name: Lint
+        run: uvx ruff check .
+      - name: Tests (local models are not available in CI, so model tests skip)
+        run: |
+          if [ -d tests ]; then uv run pytest -q; else echo "no tests yet"; fi
+
+  frontend:
+    name: Frontend (typecheck + build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build host and guest bundles
+        run: |
+          if [ ! -f frontend/package.json ]; then echo "no frontend yet"; exit 0; fi
+          cd frontend && npm ci && npm run build

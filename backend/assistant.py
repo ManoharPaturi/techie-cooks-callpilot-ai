@@ -78,6 +78,9 @@ async def coach(
         if is_unsafe_advice(out["text"]):
             out.update(text=SAFE_ANSWER, basis="general", note_paragraph_ids=[], found_in_notes=False)
             return out, "model suggested sharing a secret; replaced with safe advice"
+        if asks_whether_to_share(question) and not re.match(r"\W*no\b", out["text"], re.I):
+            # Small models sometimes describe the scam instead of answering; the answer to this question is always no.
+            out["text"] = f"{SHARE_NO} {out['text']}"
         return out, None
     except (llm.LLMError, grounding.GroundingError) as exc:
         return {
@@ -97,6 +100,17 @@ _UNSAFE_IMPERATIVE = re.compile(rf"^\W*(please\s+|go ahead and\s+|just\s+|kindly
 _NEGATION = re.compile(r"\b(not|never|don'?t|do not|no|shouldn'?t|mustn'?t)\b", re.I)
 SAFE_ANSWER = ("No. Never share an OTP, PIN, password or card details on a call, even if the caller says they are "
                "from your bank. Hang up and call the official number yourself.")
+
+
+_ASKS_SHARE = re.compile(
+    rf"\b(do|should|must|can|shall|have to|need to|is it (ok|okay|safe) to)\b[^?]*\b{_SHARE}\b"
+    rf"(?:[^?]*\b{_SECRET}\b|\s*(it|this|that)?\s*\??\s*$)", re.I)
+SHARE_NO = "No. Never share an OTP, PIN, password or card details on a call."
+
+
+def asks_whether_to_share(question: str) -> bool:
+    """'do I have to share the code?', 'should I tell him the OTP?', 'is it safe to give my PIN?'"""
+    return bool(_ASKS_SHARE.search(question or ""))
 
 
 _NON_LATIN = re.compile(r"[\u0400-\u04ff\u0590-\u06ff\u0900-\u0dff\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]")

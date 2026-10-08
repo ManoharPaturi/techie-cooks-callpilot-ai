@@ -1,0 +1,1586 @@
+[
+  {
+    "model": "qwen3:1.7b",
+    "safety": [
+      {
+        "id": "c01",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1796,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c02",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 1146,
+        "invalid": false,
+        "intent": "warning/caution",
+        "reason": ""
+      },
+      {
+        "id": "c03",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 953,
+        "invalid": false,
+        "intent": "mention/none",
+        "reason": ""
+      },
+      {
+        "id": "c04",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 937,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c05",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c06",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c07",
+        "expect": "uncertain",
+        "shown": "uncertain",
+        "ok": true,
+        "ms": 1038,
+        "invalid": false,
+        "intent": "uncertain/uncertain",
+        "reason": "model said request, but cited caller text has no request verb"
+      },
+      {
+        "id": "c08",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1267,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c09",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 958,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c10",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 1009,
+        "invalid": false,
+        "intent": "warning/caution",
+        "reason": ""
+      },
+      {
+        "id": "c11",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 961,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c12",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "i01",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 998,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i02",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1166,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i03",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1304,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i04",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1031,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i05",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1050,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i06",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 1069,
+        "invalid": false,
+        "intent": "warning/caution",
+        "reason": ""
+      },
+      {
+        "id": "i07",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 966,
+        "invalid": false,
+        "intent": "mention/caution",
+        "reason": ""
+      },
+      {
+        "id": "i08",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      }
+    ],
+    "coach": [
+      {
+        "q": "so do i have to share?",
+        "ok": true,
+        "ms": 2280,
+        "basis": "conversation",
+        "text": "The caller claims to be from your bank's fraud prevention team and asks for your OTP. This is a common scam tactic. You should not share any OTPs.",
+        "guard": ""
+      },
+      {
+        "q": "what is this call about",
+        "ok": true,
+        "ms": 1663,
+        "basis": "conversation",
+        "text": "The caller claims to be from your bank's fraud prevention team and asks for your OTP to unlock your account. This is a common scam tactic.",
+        "guard": ""
+      },
+      {
+        "q": "is this a scam?",
+        "ok": true,
+        "ms": 1789,
+        "basis": "conversation",
+        "text": "The caller claims to be from your bank's fraud prevention team and asks for your OTP. This matches a common bank-OTP scam where attackers impersonate legitimate officials to gain access to your account.",
+        "guard": ""
+      },
+      {
+        "q": "heyy",
+        "ok": true,
+        "ms": 1567,
+        "basis": "conversation",
+        "text": "The caller claims to be from your bank's fraud prevention team and asks for your OTP. This is a common scam tactic.",
+        "guard": ""
+      },
+      {
+        "q": "Is bulk product upload included in the package?",
+        "ok": true,
+        "ms": 1499,
+        "basis": "notes",
+        "text": "Product catalogue: The package includes manual entry of up to 25 products. Bulk product upload via spreadsheet import is NOT included; it can be added as an extra for an additional fee, quoted separately.",
+        "guard": ""
+      },
+      {
+        "q": "What is the client's refund policy?",
+        "ok": true,
+        "ms": 838,
+        "basis": "general",
+        "text": "There is no refund policy mentioned in the conversation.",
+        "guard": ""
+      }
+    ],
+    "summary": {
+      "model": "qwen3:1.7b",
+      "safety_correct": 20,
+      "safety_total": 20,
+      "missed_scams": 0,
+      "false_alarms": 0,
+      "invalid_outputs": 0,
+      "safety_median_s": 1.0345,
+      "coach_ok": 6,
+      "coach_total": 6,
+      "coach_guarded": 0,
+      "coach_median_s": 1.615
+    }
+  },
+  {
+    "model": "qwen3:0.6b",
+    "safety": [
+      {
+        "id": "c01",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 820,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c02",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 504,
+        "invalid": false,
+        "intent": "warning/none",
+        "reason": ""
+      },
+      {
+        "id": "c03",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 524,
+        "invalid": false,
+        "intent": "warning/none",
+        "reason": ""
+      },
+      {
+        "id": "c04",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 510,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c05",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c06",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c07",
+        "expect": "uncertain",
+        "shown": "uncertain",
+        "ok": true,
+        "ms": 554,
+        "invalid": false,
+        "intent": "uncertain/uncertain",
+        "reason": "model said request, but cited caller text has no request verb"
+      },
+      {
+        "id": "c08",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 800,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c09",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 576,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c10",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 457,
+        "invalid": false,
+        "intent": "warning/none",
+        "reason": ""
+      },
+      {
+        "id": "c11",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 438,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c12",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "i01",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 490,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i02",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 574,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i03",
+        "expect": "danger",
+        "shown": "none",
+        "ok": false,
+        "ms": 665,
+        "invalid": false,
+        "intent": "warning/caution",
+        "reason": ""
+      },
+      {
+        "id": "i04",
+        "expect": "danger",
+        "shown": "none",
+        "ok": false,
+        "ms": 489,
+        "invalid": false,
+        "intent": "warning/high",
+        "reason": ""
+      },
+      {
+        "id": "i05",
+        "expect": "danger",
+        "shown": "none",
+        "ok": false,
+        "ms": 489,
+        "invalid": false,
+        "intent": "warning/none",
+        "reason": ""
+      },
+      {
+        "id": "i06",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 491,
+        "invalid": false,
+        "intent": "warning/none",
+        "reason": ""
+      },
+      {
+        "id": "i07",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 474,
+        "invalid": false,
+        "intent": "warning/caution",
+        "reason": ""
+      },
+      {
+        "id": "i08",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      }
+    ],
+    "coach": [
+      {
+        "q": "so do i have to share?",
+        "ok": false,
+        "ms": 748,
+        "basis": "not_found",
+        "text": "No. Please provide the OTP so we can proceed.",
+        "guard": ""
+      },
+      {
+        "q": "what is this call about",
+        "ok": true,
+        "ms": 614,
+        "basis": "not_found",
+        "text": "Someone claiming to be your bank's fraud team says your account is blocked and wants the OTP sent to your phone.",
+        "guard": ""
+      },
+      {
+        "q": "is this a scam?",
+        "ok": true,
+        "ms": 729,
+        "basis": "not_found",
+        "text": "No specific facts are provided, so we cannot determine if this is a scam. If you're concerned, please let me know and I'll help you assess the situation.",
+        "guard": ""
+      },
+      {
+        "q": "heyy",
+        "ok": true,
+        "ms": 465,
+        "basis": "not_found",
+        "text": "No relevant note paragraphs found.",
+        "guard": ""
+      },
+      {
+        "q": "Is bulk product upload included in the package?",
+        "ok": true,
+        "ms": 781,
+        "basis": "notes",
+        "text": "No. The package includes manual entry of up to 25 products, but bulk product upload via spreadsheet import is NOT included; it can be added as an extra for an additional fee, quoted separately.",
+        "guard": ""
+      },
+      {
+        "q": "What is the client's refund policy?",
+        "ok": false,
+        "ms": 582,
+        "basis": "notes",
+        "text": "The client's refund policy is not specified in the provided documents.",
+        "guard": ""
+      }
+    ],
+    "summary": {
+      "model": "qwen3:0.6b",
+      "safety_correct": 17,
+      "safety_total": 20,
+      "missed_scams": 3,
+      "false_alarms": 0,
+      "invalid_outputs": 0,
+      "safety_median_s": 0.507,
+      "coach_ok": 4,
+      "coach_total": 6,
+      "coach_guarded": 0,
+      "coach_median_s": 0.6715
+    }
+  },
+  {
+    "model": "gemma3:1b",
+    "safety": [
+      {
+        "id": "c01",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1723,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c02",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 877,
+        "invalid": false,
+        "intent": "warning/caution",
+        "reason": ""
+      },
+      {
+        "id": "c03",
+        "expect": "none",
+        "shown": "caution",
+        "ok": false,
+        "ms": 846,
+        "invalid": false,
+        "intent": "request/caution",
+        "reason": ""
+      },
+      {
+        "id": "c04",
+        "expect": "danger",
+        "shown": "caution",
+        "ok": false,
+        "ms": 893,
+        "invalid": false,
+        "intent": "request/caution",
+        "reason": ""
+      },
+      {
+        "id": "c05",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c06",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c07",
+        "expect": "uncertain",
+        "shown": "uncertain",
+        "ok": true,
+        "ms": 916,
+        "invalid": false,
+        "intent": "uncertain/uncertain",
+        "reason": "model said request, but cited caller text has no request verb"
+      },
+      {
+        "id": "c08",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1566,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c09",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 918,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c10",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 879,
+        "invalid": false,
+        "intent": "warning/caution",
+        "reason": ""
+      },
+      {
+        "id": "c11",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1001,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c12",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "i01",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 929,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i02",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 963,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i03",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 1215,
+        "invalid": false,
+        "intent": "uncertain/caution",
+        "reason": ""
+      },
+      {
+        "id": "i04",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 925,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i05",
+        "expect": "danger",
+        "shown": "caution",
+        "ok": false,
+        "ms": 1235,
+        "invalid": false,
+        "intent": "request/caution",
+        "reason": ""
+      },
+      {
+        "id": "i06",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 1339,
+        "invalid": false,
+        "intent": "warning/caution",
+        "reason": ""
+      },
+      {
+        "id": "i07",
+        "expect": "none",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 915,
+        "invalid": false,
+        "intent": "uncertain/caution",
+        "reason": ""
+      },
+      {
+        "id": "i08",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      }
+    ],
+    "coach": [
+      {
+        "q": "so do i have to share?",
+        "ok": true,
+        "ms": 1957,
+        "basis": "conversation",
+        "text": "No. You do not need to share the OTP. It's a security measure to verify your identity.",
+        "guard": ""
+      },
+      {
+        "q": "what is this call about",
+        "ok": true,
+        "ms": 2133,
+        "basis": "conversation",
+        "text": "Your account has been blocked because of a suspicious transaction.",
+        "guard": ""
+      },
+      {
+        "q": "is this a scam?",
+        "ok": false,
+        "ms": 1417,
+        "basis": "conversation",
+        "text": "No.",
+        "guard": ""
+      },
+      {
+        "q": "heyy",
+        "ok": true,
+        "ms": 1627,
+        "basis": "conversation",
+        "text": "We just sent a one-time password to your phone.",
+        "guard": ""
+      },
+      {
+        "q": "Is bulk product upload included in the package?",
+        "ok": false,
+        "ms": 1330,
+        "basis": "not_found",
+        "text": "No, bulk product upload is not included.",
+        "guard": ""
+      },
+      {
+        "q": "What is the client's refund policy?",
+        "ok": false,
+        "ms": 2478,
+        "basis": "notes",
+        "text": "The client's refund policy is outlined in the website Delivery Agreement. It states that refunds are granted within 30 days of delivery, provided the client sends final product images and menu text by Tuesday. If the images arrive late, delivery moves back by the same number of 3",
+        "guard": ""
+      }
+    ],
+    "summary": {
+      "model": "gemma3:1b",
+      "safety_correct": 15,
+      "safety_total": 20,
+      "missed_scams": 1,
+      "false_alarms": 1,
+      "invalid_outputs": 0,
+      "safety_median_s": 0.927,
+      "coach_ok": 3,
+      "coach_total": 6,
+      "coach_guarded": 0,
+      "coach_median_s": 1.792
+    }
+  },
+  {
+    "model": "llama3.2:1b",
+    "safety": [
+      {
+        "id": "c01",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1572,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c02",
+        "expect": "none",
+        "shown": "danger",
+        "ok": false,
+        "ms": 815,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c03",
+        "expect": "none",
+        "shown": "danger",
+        "ok": false,
+        "ms": 850,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c04",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 848,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c05",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c06",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c07",
+        "expect": "uncertain",
+        "shown": "uncertain",
+        "ok": true,
+        "ms": 857,
+        "invalid": false,
+        "intent": "uncertain/uncertain",
+        "reason": "model said request, but cited caller text has no request verb"
+      },
+      {
+        "id": "c08",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 1131,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c09",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 832,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c10",
+        "expect": "none",
+        "shown": "danger",
+        "ok": false,
+        "ms": 817,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c11",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 778,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c12",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "i01",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 844,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i02",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 1064,
+        "invalid": false,
+        "intent": "uncertain/high",
+        "reason": ""
+      },
+      {
+        "id": "i03",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 1178,
+        "invalid": false,
+        "intent": "uncertain/high",
+        "reason": ""
+      },
+      {
+        "id": "i04",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 921,
+        "invalid": false,
+        "intent": "uncertain/high",
+        "reason": ""
+      },
+      {
+        "id": "i05",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 935,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i06",
+        "expect": "none",
+        "shown": "danger",
+        "ok": false,
+        "ms": 818,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i07",
+        "expect": "none",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 851,
+        "invalid": false,
+        "intent": "uncertain/high",
+        "reason": ""
+      },
+      {
+        "id": "i08",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      }
+    ],
+    "coach": [
+      {
+        "q": "so do i have to share?",
+        "ok": true,
+        "ms": 2594,
+        "basis": "conversation",
+        "text": "The caller claims to be from the bank's fraud prevention team and says your account has been blocked due to a suspicious transaction. They've already sent a one-time password to your phone. Requesting the OTP is a high-risk action and could potentially compromise your account. Do",
+        "guard": ""
+      },
+      {
+        "q": "what is this call about",
+        "ok": true,
+        "ms": 1932,
+        "basis": "conversation",
+        "text": "The caller claims to be from the bank's fraud prevention team and says your account has been blocked due to a suspicious transaction. They've already sent a one-time password to your phone. The safety alert is high, indicating a potential scam or phishing attempt.",
+        "guard": ""
+      },
+      {
+        "q": "is this a scam?",
+        "ok": true,
+        "ms": 1992,
+        "basis": "conversation",
+        "text": "This matches a common bank-OTP scam. Please do not share your OTP or any other sensitive information with the caller. Instead, hang up and call the official number of your bank to verify the authenticity of the call and obtain the OTP securely. Do not provide any OTPs or codes to",
+        "guard": ""
+      },
+      {
+        "q": "heyy",
+        "ok": true,
+        "ms": 2996,
+        "basis": "conversation",
+        "text": "Heyy, Recent conversation:£[u-0001] CALLER: \"Hello, I am calling from the fraud prevention team of your bank.£[u-0002] CALLER: \"Your account has been blocked because of a suspicious transaction.£[u-0003] YOU: \"Okay, what do you need from me?£[u-0004] CALLER: \"We just sent a one-\\",
+        "guard": ""
+      },
+      {
+        "q": "Is bulk product upload included in the package?",
+        "ok": true,
+        "ms": 1945,
+        "basis": "notes",
+        "text": "Bulk product upload via spreadsheet import is NOT included; it can be added as an extra for an additional fee, quoted separately. This matches a common bank-OTP scam where they ask for OTPs and PINs, never for account verification or bulk data transfer. You should hang up and try",
+        "guard": ""
+      },
+      {
+        "q": "What is the client's refund policy?",
+        "ok": false,
+        "ms": 2253,
+        "basis": "notes",
+        "text": "The client's refund policy is not specified in this conversation. However, based on the Delivery: clause, it appears that the client is responsible for providing final product images and menu text on time. If the images are not received on time, the delivery may be delayed or the",
+        "guard": ""
+      }
+    ],
+    "summary": {
+      "model": "llama3.2:1b",
+      "safety_correct": 12,
+      "safety_total": 20,
+      "missed_scams": 3,
+      "false_alarms": 4,
+      "invalid_outputs": 0,
+      "safety_median_s": 0.8505,
+      "coach_ok": 5,
+      "coach_total": 6,
+      "coach_guarded": 0,
+      "coach_median_s": 2.1225
+    }
+  },
+  {
+    "model": "gemma4:e2b",
+    "safety": [
+      {
+        "id": "c01",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 12519,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c02",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 5980,
+        "invalid": false,
+        "intent": "warning/none",
+        "reason": ""
+      },
+      {
+        "id": "c03",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 7191,
+        "invalid": false,
+        "intent": "mention/none",
+        "reason": ""
+      },
+      {
+        "id": "c04",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 6813,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c05",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c06",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c07",
+        "expect": "uncertain",
+        "shown": "uncertain",
+        "ok": true,
+        "ms": 5665,
+        "invalid": false,
+        "intent": "uncertain/uncertain",
+        "reason": ""
+      },
+      {
+        "id": "c08",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 11173,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c09",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 16324,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c10",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 8823,
+        "invalid": false,
+        "intent": "warning/none",
+        "reason": ""
+      },
+      {
+        "id": "c11",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 4697,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "c12",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "i01",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 5445,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i02",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 5622,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i03",
+        "expect": "danger",
+        "shown": "none",
+        "ok": false,
+        "ms": 4883,
+        "invalid": false,
+        "intent": "mention/high",
+        "reason": ""
+      },
+      {
+        "id": "i04",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 3092,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i05",
+        "expect": "danger",
+        "shown": "danger",
+        "ok": true,
+        "ms": 3341,
+        "invalid": false,
+        "intent": "request/high",
+        "reason": ""
+      },
+      {
+        "id": "i06",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 2805,
+        "invalid": false,
+        "intent": "warning/none",
+        "reason": ""
+      },
+      {
+        "id": "i07",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": 3089,
+        "invalid": false,
+        "intent": "mention/none",
+        "reason": ""
+      },
+      {
+        "id": "i08",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      }
+    ],
+    "coach": [
+      {
+        "q": "so do i have to share?",
+        "ok": true,
+        "ms": 9220,
+        "basis": "conversation",
+        "text": "No, you should never share a one-time password (OTP) with anyone, including someone claiming to be from your bank. Always hang up and call the official bank number if you have concerns.",
+        "guard": ""
+      },
+      {
+        "q": "what is this call about",
+        "ok": true,
+        "ms": 8201,
+        "basis": "conversation",
+        "text": "Someone claiming to be the bank's fraud prevention team is asking you to read back a one-time password sent to your phone. Do not share this code with anyone. This matches a common bank-OTP scam.",
+        "guard": ""
+      },
+      {
+        "q": "is this a scam?",
+        "ok": true,
+        "ms": 9469,
+        "basis": "conversation",
+        "text": "This call has several red flags, as the caller is asking you to provide a one-time password (OTP). Never share an OTP with anyone, as banks will never ask for it this way. Hang up and call your bank directly using a trusted number if you are concerned.",
+        "guard": ""
+      },
+      {
+        "q": "heyy",
+        "ok": true,
+        "ms": 7770,
+        "basis": "conversation",
+        "text": "The caller claims to be from the fraud prevention team and states your account is blocked and they sent an OTP. Do not share the one-time password. Never share an OTP with anyone.",
+        "guard": ""
+      },
+      {
+        "q": "Is bulk product upload included in the package?",
+        "ok": true,
+        "ms": 7629,
+        "basis": "notes",
+        "text": "Bulk product upload via spreadsheet import is not included in the package; it can be added for an extra fee.",
+        "guard": ""
+      },
+      {
+        "q": "What is the client's refund policy?",
+        "ok": true,
+        "ms": 7978,
+        "basis": "not_found",
+        "text": "I do not have any information about the client's refund policy. Please check the relevant agreement documents for that information.",
+        "guard": ""
+      }
+    ],
+    "summary": {
+      "model": "gemma4:e2b",
+      "safety_correct": 19,
+      "safety_total": 20,
+      "missed_scams": 1,
+      "false_alarms": 0,
+      "invalid_outputs": 0,
+      "safety_median_s": 5.6435,
+      "coach_ok": 6,
+      "coach_total": 6,
+      "coach_guarded": 0,
+      "coach_median_s": 8.0895
+    }
+  },
+  {
+    "model": "gemma4:e4b",
+    "safety": [
+      {
+        "id": "c01",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 47285,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "c02",
+        "expect": "none",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 50909,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "c03",
+        "expect": "none",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 50576,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "c04",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 47914,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "c05",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c06",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "c07",
+        "expect": "uncertain",
+        "shown": "uncertain",
+        "ok": true,
+        "ms": 47464,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "c08",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 47073,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "c09",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 46170,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "c10",
+        "expect": "none",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 45940,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "c11",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 46626,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "c12",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      },
+      {
+        "id": "i01",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 47410,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "i02",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 46205,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "i03",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 46173,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "i04",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 47699,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "i05",
+        "expect": "danger",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 46459,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "i06",
+        "expect": "none",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 46148,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "i07",
+        "expect": "none",
+        "shown": "uncertain",
+        "ok": false,
+        "ms": 46186,
+        "invalid": true,
+        "intent": "uncertain/uncertain",
+        "reason": "local model timed out"
+      },
+      {
+        "id": "i08",
+        "expect": "none",
+        "shown": "none",
+        "ok": true,
+        "ms": null,
+        "invalid": false,
+        "intent": "-"
+      }
+    ],
+    "coach": [
+      {
+        "q": "so do i have to share?",
+        "ok": false,
+        "ms": 46339,
+        "basis": "general",
+        "text": "The local model could not answer just now. Ask again in a moment.",
+        "guard": "local model timed out"
+      },
+      {
+        "q": "what is this call about",
+        "ok": false,
+        "ms": 46890,
+        "basis": "general",
+        "text": "The local model could not answer just now. Ask again in a moment.",
+        "guard": "local model timed out"
+      },
+      {
+        "q": "is this a scam?",
+        "ok": false,
+        "ms": 46940,
+        "basis": "general",
+        "text": "The local model could not answer just now. Ask again in a moment.",
+        "guard": "local model timed out"
+      },
+      {
+        "q": "heyy",
+        "ok": false,
+        "ms": 46887,
+        "basis": "general",
+        "text": "The local model could not answer just now. Ask again in a moment.",
+        "guard": "local model timed out"
+      },
+      {
+        "q": "Is bulk product upload included in the package?",
+        "ok": false,
+        "ms": 48415,
+        "basis": "general",
+        "text": "The local model could not answer just now. Ask again in a moment.",
+        "guard": "local model timed out"
+      },
+      {
+        "q": "What is the client's refund policy?",
+        "ok": false,
+        "ms": 48443,
+        "basis": "general",
+        "text": "The local model could not answer just now. Ask again in a moment.",
+        "guard": "local model timed out"
+      }
+    ],
+    "summary": {
+      "model": "gemma4:e4b",
+      "safety_correct": 5,
+      "safety_total": 20,
+      "missed_scams": 10,
+      "false_alarms": 0,
+      "invalid_outputs": 16,
+      "safety_median_s": 46.8495,
+      "coach_ok": 0,
+      "coach_total": 6,
+      "coach_guarded": 6,
+      "coach_median_s": 46.915
+    }
+  }
+]

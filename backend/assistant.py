@@ -32,6 +32,9 @@ Respond only with the JSON object."""
 
 SUMMARY_SYSTEM = """You summarise a finished two-person call for the user (YOU), privately.
 Write a concise summary (2-3 sentences) and propose AT MOST three concrete follow-up tasks for YOU.
+caller_requests: list what the CALLER asked YOU to give or do (at most three), in a few neutral words each, e.g.
+"the OTP sent to your phone", "a ₹5,000 deposit by Friday". Cite only CALLER line ids. Use an empty list if the
+caller asked for nothing.
 Each task must cite the transcript ids that support it.
 due_text: copy the exact time phrase spoken in the transcript (e.g. "by Friday", "before Tuesday").
 If no time phrase was spoken, use an empty string. Never invent dates.
@@ -139,7 +142,7 @@ async def summarize(
     transcript = transcript[-40:]
     allowed = [u.id for u in transcript]
     if not allowed:
-        return {"summary": "No speech was transcribed in this session.", "tasks": []}, None
+        return {"summary": "No speech was transcribed in this session.", "caller_requests": [], "tasks": []}, None
     try:
         raw = await llm.chat_json(
             client, SUMMARY_SYSTEM,
@@ -148,8 +151,17 @@ async def summarize(
         )
         result = grounding.validate_summary(raw, allowed)
     except (llm.LLMError, grounding.GroundingError) as exc:
-        return {"summary": "Summary unavailable (local model error).", "tasks": []}, str(exc)
+        return {"summary": "Summary unavailable (local model error).", "caller_requests": [], "tasks": []}, str(exc)
     by_id = {u.id: u for u in transcript}
+    if has_foreign_script(result["summary"]):
+        return {"summary": "Summary unavailable (the model drifted out of English).", "caller_requests": [], "tasks": []}, \
+            "summary drifted out of English"
+    # A caller request must be backed by the caller's own words and stay in English.
+    result["caller_requests"] = [
+        r for r in result["caller_requests"]
+        if all(by_id[i].source == "REMOTE" for i in r["transcript_ids"]) and not has_foreign_script(r["request"])
+    ]
+    result["tasks"] = [t for t in result["tasks"] if not has_foreign_script(t["description"])]
     if alerts:
         result["tasks"] = [t for t in result["tasks"] if not task_follows_scammer(t["description"])]
     for t in result["tasks"]:

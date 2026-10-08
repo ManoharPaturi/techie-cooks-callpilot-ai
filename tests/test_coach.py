@@ -128,3 +128,47 @@ def test_think_switch_only_for_thinking_models():
 ])
 def test_scam_call_tasks_never_follow_the_caller(task, bad):
     assert assistant.task_follows_scammer(task) is bad
+
+
+async def test_caller_requests_must_cite_the_callers_own_words(monkeypatch):
+    async def fake(*a, **k):
+        return {"summary": "A caller claiming to be the bank asked for the OTP.",
+                "caller_requests": [{"request": "the OTP sent to your phone", "transcript_ids": ["u-0005"]},
+                                    {"request": "what you need", "transcript_ids": ["u-0003"]},   # YOU's line: dropped
+                                    {"request": "验证码", "transcript_ids": ["u-0004"]}],          # not English: dropped
+                "tasks": [{"description": "Call the bank on the official number.", "due_text": "", "transcript_ids": ["u-0002"]}]}
+    monkeypatch.setattr(assistant.llm, "chat_json", fake)
+    async with httpx.AsyncClient() as client:
+        out, err = await assistant.summarize(client, lines(SCAM), ALERTS)
+    assert err is None
+    assert out["caller_requests"] == [{"request": "the OTP sent to your phone", "transcript_ids": ["u-0005"]}]
+
+
+async def test_summary_in_another_script_is_withheld(monkeypatch):
+    async def fake(*a, **k):
+        return {"summary": "来电者要求提供验证码。", "caller_requests": [], "tasks": []}
+    monkeypatch.setattr(assistant.llm, "chat_json", fake)
+    async with httpx.AsyncClient() as client:
+        out, err = await assistant.summarize(client, lines(SCAM), ALERTS)
+    assert err and "unavailable" in out["summary"].lower() and out["tasks"] == []
+
+
+def _gemma_installed() -> bool:
+    try:
+        tags = httpx.get(assistant.llm.settings.ollama_url.split("/api/")[0] + "/api/tags", timeout=1.5).json()
+        return any(m.get("name") == "gemma4:e2b" for m in tags.get("models", []))
+    except (httpx.HTTPError, ValueError):
+        return False
+
+
+@pytest.mark.skipif(not _gemma_installed(), reason="gemma4:e2b not installed")
+async def test_gemma_summarises_a_real_scam_call(monkeypatch):
+    """Real Gemma 4 E2B run: summary in English, the OTP request found on the caller's line, no task that obeys the caller."""
+    monkeypatch.setitem(assistant.llm.ROLE_MODEL, "summary", "gemma4:e2b")
+    async with httpx.AsyncClient() as client:
+        out, err = await assistant.summarize(client, lines(SCAM), ALERTS)
+    assert err is None, err
+    assert not assistant.has_foreign_script(out["summary"])
+    assert any("otp" in r["request"].lower() or "code" in r["request"].lower() or "password" in r["request"].lower()
+               for r in out["caller_requests"]), out
+    assert not any(assistant.task_follows_scammer(t["description"]) for t in out["tasks"])

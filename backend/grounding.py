@@ -69,9 +69,22 @@ def summary_schema(allowed_transcript_ids: list[str]) -> dict[str, Any]:
     return {
         "type": "object",
         "additionalProperties": False,
-        "required": ["summary", "tasks"],
+        "required": ["summary", "caller_requests", "tasks"],
         "properties": {
             "summary": {"type": "string", "maxLength": 500},
+            "caller_requests": {
+                "type": "array",
+                "maxItems": 3,
+                "items": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "required": ["request", "transcript_ids"],
+                    "properties": {
+                        "request": {"type": "string", "maxLength": 120},
+                        "transcript_ids": _id_array(allowed_transcript_ids, min_items=1, max_items=2),
+                    },
+                },
+            },
             "tasks": {
                 "type": "array",
                 "maxItems": 3,
@@ -173,4 +186,13 @@ def validate_summary(raw: dict[str, Any], allowed_ids: list[str]) -> dict[str, A
             "due_text": check_text(t.get("due_text", ""), "due_text", 80),
             "transcript_ids": check_ids(t.get("transcript_ids"), allowed_ids, min_items=1, max_items=3, field="task.transcript_ids"),
         })
-    return {"summary": check_text(raw.get("summary"), "summary", 500), "tasks": tasks}
+    requests = []
+    for r in (raw.get("caller_requests") or [])[:3]:
+        if not isinstance(r, dict):
+            raise GroundingError("caller request malformed")
+        requests.append({
+            "request": check_text(r.get("request"), "request", 120),
+            "transcript_ids": check_ids(r.get("transcript_ids"), allowed_ids, min_items=1, max_items=2,
+                                        field="caller_requests.transcript_ids"),
+        })
+    return {"summary": check_text(raw.get("summary"), "summary", 500), "caller_requests": requests, "tasks": tasks}

@@ -20,9 +20,9 @@
 | Member | Contribution |
 | ------ | ------------ |
 | Manohar P (Team Lead) | Architecture, backend pipeline, local models, live-call networking, submission |
-| Sainath B | _To be filled in by the team_ |
-| Pushpak K | _To be filled in by the team_ |
-| Laasya B | _To be filled in by the team_ |
+| Sainath B | video upload |
+| Pushpak K | documentation |
+| Laasya B | Idea and Phase planning |
 
 ## Problem Statement
 

@@ -363,7 +363,7 @@ export default function App() {
         </main>
         <footer className="foot">
           CallPilot AI · built by Techie Cooks for Hacktoberfest Hack Day Coimbatore 2026 · open source (MIT) ·
-          speech, scam checks and summaries run on this Mac with whisper.cpp, Qwen3 and Gemma 4.
+          speech, scam checks and summaries run on this Mac with whisper.cpp and Qwen3 (Gemma 4 optional).
         </footer>
       </div>
     );

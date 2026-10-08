@@ -7,7 +7,7 @@ if [ -z "${WHISPER_CPP_DIR:-}" ]; then  # built by scripts/setup.sh into ./vendo
   if [ -x vendor/whisper.cpp/build/bin/whisper-server ]; then WHISPER_CPP_DIR=vendor/whisper.cpp; else WHISPER_CPP_DIR=../vendor/whisper.cpp; fi
 fi
 OLLAMA_MODEL="${OLLAMA_MODEL:-qwen3:1.7b}"
-SUMMARY_MODEL="${SUMMARY_MODEL:-gemma4:e2b}"
+SUMMARY_MODEL="${SUMMARY_MODEL:-$OLLAMA_MODEL}"
 ok() { printf "  \033[32m✓\033[0m %s\n" "$1"; }
 bad() { printf "  \033[31m✗\033[0m %s\n" "$1"; }
 

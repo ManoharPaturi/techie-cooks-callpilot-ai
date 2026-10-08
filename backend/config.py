@@ -39,8 +39,9 @@ class Settings:
     # Live assistant answers/auto-replies. Same model as scam checks by default: on 8 GB two models can't stay loaded,
     # and Ollama evicting/reloading them mid-call made alerts 2-4x slower (measured).
     assistant_model: str = os.environ.get("ASSISTANT_MODEL", os.environ.get("OLLAMA_MODEL", "qwen3:1.7b"))
-    # After-call summary + follow-up tasks: Gemma 4 writes these once the call has ended (speed matters least there).
-    summary_model: str = os.environ.get("SUMMARY_MODEL", "gemma4:e2b")
+    # After-call summary + follow-up tasks. Defaults to the live model, so only ONE model is ever in memory (8 GB Macs).
+    # Set SUMMARY_MODEL=gemma4:e2b to have Gemma 4 write it instead (it loads after the call, then unloads).
+    summary_model: str = os.environ.get("SUMMARY_MODEL", os.environ.get("OLLAMA_MODEL", "qwen3:1.7b"))
     ollama_timeout_s: float = float(os.environ.get("OLLAMA_TIMEOUT_S", "45"))
     vad: str = os.environ.get("VAD", "auto")  # auto (Silero if available) | silero | energy
     llm_workers: int = int(os.environ.get("LLM_WORKERS", "1"))

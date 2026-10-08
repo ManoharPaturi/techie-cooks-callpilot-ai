@@ -2,12 +2,13 @@
 
 > A private AI copilot for phone calls that runs **entirely on your Mac**. It hears both sides, flags scam requests
 > (OTP, UPI PIN, "digital arrest", money transfers) the moment they are spoken, and answers your questions from your own notes.
-> **Gemma 4** writes the after-call summary. The caller never sees any of it.
+> One small local model (Qwen3 1.7B) does it all, so it runs on an 8 GB laptop; **Gemma 4** can optionally write the after-call
+> summary. The caller never sees any of it.
 
 [![CI](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Hacktoberfest 2026](https://img.shields.io/badge/Hacktoberfest-2026-ff8ae2)
-![Gemma 4](https://img.shields.io/badge/Gemma%204-E2B-4285F4)
+![Gemma 4](https://img.shields.io/badge/Gemma%204%20E2B-optional-4285F4)
 ![Open-source AI](https://img.shields.io/badge/AI-open--weight%2C%20on--device-2ea44f)
 
 ![CallPilot during a scam call](docs/screenshot-hang-up.png)
@@ -48,9 +49,10 @@ CallPilot sits beside a call on the user's Mac. It transcribes both sides in two
 **CALLER** = the phone), checks every caller sentence for scam patterns with rules plus a local model, and shows a
 plain-language warning with the exact words that triggered it. A private assistant answers "what is this call about?",
 "do I have to share this?" or "is bulk upload in our contract?" from the conversation and the user's own notes. When the call
-ends, **Gemma 4** writes a summary, lists what the caller asked for, and proposes protective follow-ups.
+ends, the local model writes a summary, lists what the caller asked for, and proposes protective follow-ups (Qwen3 by
+default, or **Gemma 4 E2B** with one setting).
 
-![After the call: Gemma 4 summary and the caller's requests](docs/screenshot-gemma-after-call.jpg)
+![After the call: summary and the caller's requests (here written by Gemma 4 E2B)](docs/screenshot-gemma-after-call.jpg)
 
 ### Key Features
 
@@ -63,7 +65,7 @@ ends, **Gemma 4** writes a summary, lists what the caller asked for, and propose
 - **Private assistant:**
   - Answers are labelled by basis (*from your notes*, *from the conversation*, *general safety*, *not found*).
   - **Auto-suggest** drafts a reply when the caller asks a normal question.
-- **After-call summary by Gemma 4 E2B:**
+- **After-call summary** (Qwen3 by default, optionally Gemma 4 E2B):
   - a summary
   - **"The caller asked you for…"**, with each item linked to the caller's words
   - protective follow-up tasks you can edit, approve or dismiss
@@ -87,8 +89,9 @@ ends, **Gemma 4** writes a summary, lists what the caller asked for, and propose
   Tests enforce this.
 - **Built for India.** Rules, model guidance, labelled cases and a demo call for "digital arrest", UPI PIN "refunds" and KYC
   scams, plus the 1930 helpline in every warning.
-- **Two models with two jobs.** A fast 1.7B model (Qwen3) handles live checks. **Gemma 4 E2B** does the slower, quality-sensitive after-call
-  writing. Both fit on an 8 GB laptop because Gemma only loads after the call.
+- **One model in memory.** A 1.7B model (Qwen3) does live checks, answers and the summary, so an 8 GB laptop never holds two
+  models at once. **Gemma 4 E2B** is an optional after-call writer (`SUMMARY_MODEL=gemma4:e2b`): it loads after the call and
+  unloads straight after.
 
 ## Technical Implementation
 
@@ -109,7 +112,7 @@ flowchart LR
     R["Scam rules<br/>(regex, India-aware)"]
     Q["Qwen3 1.7B<br/>classify + cite IDs"]
     A["Private assistant<br/>Qwen3 1.7B + notes"]
-    GM["Gemma 4 E2B<br/>after-call summary,<br/>caller requests, tasks"]
+    GM["After-call summary<br/>Qwen3 1.7B (default)<br/>or Gemma 4 E2B (optional)"]
     RP["Call report<br/>(HTML)"]
   end
   G <-- "WebRTC audio (LAN, no STUN/TURN)" --> B
@@ -130,7 +133,7 @@ flowchart LR
 | Frontend        | React 18, TypeScript, Vite, AudioWorklet, WebRTC, self-hosted fonts (Bricolage Grotesque, IBM Plex) |
 | Backend         | Python 3.11+, FastAPI, Uvicorn, httpx, Pydantic, NumPy, SciPy (`resample_poly`), ONNX Runtime |
 | Database        | N/A (transcripts, notes and alerts stay in memory only) |
-| AI / ML         | **Gemma 4 E2B** (after-call summary), Qwen3 1.7B (live safety + assistant), Whisper base.en via whisper.cpp, Silero VAD |
+| AI / ML         | Qwen3 1.7B (live safety, assistant, after-call summary), **Gemma 4 E2B** (optional after-call summary), Whisper base.en via whisper.cpp, Silero VAD |
 | Infrastructure  | Ollama (local model server), whisper.cpp server, iPhone Personal Hotspot with a name-constrained local CA, GitHub Actions CI |
 | APIs / Services | N/A (no cloud APIs; everything runs on the laptop) |
 
@@ -150,9 +153,9 @@ flowchart LR
      *uncertain*.
 4. **Assistant.** The user's question, the recent lines, alerts and matching note paragraphs go to the assistant. It must label its basis and cite
    IDs. Code guards check the answer before it is shown.
-5. **After the call.** **Gemma 4 E2B** loads (about a minute on 8 GB) and writes the summary, the caller's requests (each citing a
-   CALLER line) and up to three follow-up tasks. Guards drop non-English text and any task that obeys the caller. Gemma then
-   unloads and the live model is warmed up again.
+5. **After the call.** The summary model (Qwen3 by default; Gemma 4 E2B if enabled, which loads in about a minute on 8 GB) writes the summary, the caller's requests (each citing a
+   CALLER line) and up to three follow-up tasks. Guards drop non-English text and any task that obeys the caller. If Gemma was used,
+   it unloads and the live model is warmed up again.
 6. **Live calls.** The phone opens a QR link served by a **separate** HTTPS guest app on the hotspot IP. A single-use 128-bit
    token (15-minute TTL) admits it to a two-peer room. WebRTC runs with no ICE servers, so audio stays on the hotspot LAN.
 
@@ -160,8 +163,9 @@ flowchart LR
 
 - **8 GB is the constraint we designed for.** Qwen3 1.7B and Gemma 4 E2B can't both stay loaded next to Whisper and the browser:
   - Running Gemma live caused 53 model reloads in one call, and alerts took 9.6 s median / 21.7 s p95.
-  - So Gemma runs **after** the call (`keep_alive: 0`, 180 s timeout) and the live model is re-warmed afterwards.
-  - On a 16 GB+ Mac, set `ASSISTANT_MODEL=gemma4:e2b` to use Gemma live too.
+  - So the default is **one model for everything** (Qwen3 1.7B). Gemma 4 E2B is optional and only runs **after** the
+    call (`keep_alive: 0`, 180 s timeout); the live model is re-warmed afterwards.
+  - On a 16 GB+ Mac, set `SUMMARY_MODEL=gemma4:e2b` (and even `ASSISTANT_MODEL=gemma4:e2b`) to use Gemma more.
 - **Classify, don't generate.** Generating explanations made live alerts take 13.6 s. Having the model output only a
   classification (≈40 tokens instead of ≈116), with advice from a vetted table, brought it to **5.8 s** (3.5 s at real call pace).
 - **One LLM queue with priorities:** safety > the user's question > auto-suggest > summary. A newer question replaces an older
@@ -185,8 +189,8 @@ flowchart LR
 
 | Model (same tasks, one at a time) | Safety cases | Missed scams | Assistant answers |
 |---|---|---|---|
-| **qwen3:1.7b**, live checks | **20/20** | **0** | **6/6** |
-| **gemma4:e2b**, after-call summary | 19/20 | 1 | **6/6** |
+| **qwen3:1.7b**, default for everything | **20/20** | **0** | **6/6** |
+| **gemma4:e2b**, optional after-call summary | 19/20 | 1 | **6/6** |
 | qwen3:0.6b | 17/20 | 3 | 4/6 |
 | gemma3:1b | 15/20 | 1 | 3/6 |
 | llama3.2:1b | 12/20 | 3 | 5/6 |
@@ -222,7 +226,8 @@ Everything in this repository was built by the team during the Hack Day event, s
   - Gemma 4 E2B moved to the after-call summary, with guards for language drift and scammer-following tasks
 - **Oct 8:**
   - Gemma 4 lists what the caller asked for (grounded in caller lines)
-  - this public repository, CI, and the submission README
+  - this public repository, CI, one-command setup (`./start`), the submission README
+  - Qwen3 made the default for every job so 8 GB Macs hold one model; Gemma 4 kept as an option
 
 The original development history (commits from Oct 3) is in our team's private working repository. This public repository was
 assembled from it on Oct 8 through reviewed pull requests, one per component, each checked by CI. See the
@@ -242,7 +247,7 @@ and is never hosted online.
 
 To try it, run `./start` (see [Setup and Usage](#setup-and-usage)). The dashboard opens at `http://127.0.0.1:8765`.
 - Pick a demo caller (fake bank OTP, fake CBI "digital arrest", a client call, or a prompt-injection attempt) and press **Play caller audio**.
-- Watch the alerts and the hang-up banner, ask the assistant a question, then **End call** to see the Gemma 4 summary and
+- Watch the alerts and the hang-up banner, ask the assistant a question, then **End call** to see the after-call summary and
   download the call report.
 - With an iPhone on Personal Hotspot you can also make a real live call (see below).
 
@@ -251,22 +256,22 @@ To try it, run `./start` (see [Setup and Usage](#setup-and-usage)). The dashboar
 **Demo Video:** _link will be added before submission_
 
 The video covers the fake-bank OTP call (alerts → hang-up banner), a private question to the assistant, a normal client call
-with a note-grounded answer, and the Gemma 4 after-call summary and report.
+with a note-grounded answer, and the after-call summary and report.
 
 ## Open Source and AI Usage
 
 ### AI / Models
 
-- **Gemma 4 E2B** (`gemma4:e2b`, Google, via Ollama). This is our **Gemma 4 challenge** component. After the call it:
+- **Gemma 4 E2B** (`gemma4:e2b`, Google, via Ollama), **optional**: set `SUMMARY_MODEL=gemma4:e2b` (and `ollama pull gemma4:e2b`). After the call it:
   - writes the summary
   - lists what the caller asked for, each item citing the caller's line
   - proposes up to three protective follow-up tasks
 
-  It runs only after the call, so it fits on an 8 GB laptop next to the live model. Its output is validated (IDs must exist,
+  It runs only after the call and unloads afterwards. By default Qwen3 does this job so an 8 GB laptop never holds two models. Its output is validated (IDs must exist,
   requests must cite CALLER lines, English only, no tasks that obey a scammer), and the report credits it only when it actually
   wrote the text. Code: `backend/assistant.py` (`summarize`), `backend/session.py` (`end_session`), `backend/report.py`.
-- **Qwen3 1.7B** (`qwen3:1.7b`, Alibaba, via Ollama). Live scam classification and the private assistant. It scored best on our
-  safety set (20/20).
+- **Qwen3 1.7B** (`qwen3:1.7b`, Alibaba, via Ollama), **default for every job**: live scam classification, the private
+  assistant and the after-call summary. It scored best on our safety set (20/20).
 - **Whisper base.en** (OpenAI weights) via **whisper.cpp**: local speech-to-text.
 - **Silero VAD** (ONNX): neural voice-activity detection that splits speech into sentences.
 
@@ -299,7 +304,7 @@ Stop with `./stop`, double-click `Stop CallPilot.command`, or close the window.
 1. installs any missing tools: `uv`, `node`, `cmake` and `ollama` via Homebrew on a Mac, apt / official installers on Linux.
    It asks before installing anything.
 2. downloads and builds **whisper.cpp** (pinned to the version we tested) into `./vendor`, plus the Whisper `base.en` model
-3. pulls the local models **`qwen3:1.7b`** and **`gemma4:e2b`** (about 6 GB, retried if the network drops)
+3. pulls the local model **`qwen3:1.7b`** (1.4 GB, retried if the network drops); add `gemma4:e2b` with `SUMMARY_MODEL=gemma4:e2b ./start`
 4. installs the Python and frontend dependencies and builds the dashboard
 
 Every later run skips whatever is already done. It then starts speech-to-text, the models and the app on `127.0.0.1` and
@@ -314,7 +319,7 @@ The setup alone is `./scripts/setup.sh`, and `./scripts/preflight.sh` checks too
 |---|---|
 | Computer | **macOS on Apple Silicon** (tested: 8 GB MacBook Air M3). Linux x86-64/arm64 works too (setup verified in CI). Windows: use WSL2 with Ubuntu. |
 | Package manager | macOS: [Homebrew](https://brew.sh) (the only thing to install by hand). Linux: `apt` and `sudo`. |
-| Disk / memory | ~8 GB free disk, 8 GB RAM minimum (16 GB recommended) |
+| Disk / memory | ~3 GB free disk (~8 GB with Gemma 4), 8 GB RAM minimum |
 | Browser | Chrome or another Chromium browser (microphone + AudioWorklet) |
 | Optional | An iPhone with Personal Hotspot, for live phone calls |
 
@@ -324,7 +329,7 @@ No accounts or API keys are needed. After setup, everything works offline.
 
 ```bash
 brew install uv node cmake ollama              # macOS
-ollama pull qwen3:1.7b && ollama pull gemma4:e2b
+ollama pull qwen3:1.7b                         # optional: ollama pull gemma4:e2b
 git clone https://github.com/ggml-org/whisper.cpp vendor/whisper.cpp
 (cd vendor/whisper.cpp && git checkout 60c0be6 && sh models/download-ggml-model.sh base.en \
   && cmake -B build && cmake --build build -j --target whisper-server)
@@ -340,7 +345,7 @@ Every setting is optional. Copy [`.env.example`](.env.example) to `.env` to chan
 ```env
 OLLAMA_MODEL=qwen3:1.7b       # live scam checks
 ASSISTANT_MODEL=qwen3:1.7b    # private answers (gemma4:e2b on 16 GB+ Macs)
-SUMMARY_MODEL=gemma4:e2b      # after-call summary (Gemma 4)
+SUMMARY_MODEL=qwen3:1.7b      # after-call summary; gemma4:e2b to use Gemma 4
 VAD=auto                      # Silero if available, else energy
 PERSIST_RAW_AUDIO=false       # nothing is written to disk by default
 PERSIST_TRANSCRIPTS=false
@@ -368,7 +373,7 @@ real **Start CallPilot** / **Stop CallPilot** apps next to the repo folder.
 2. Choose *Fake bank "fraud team" asks for your OTP* → **Play caller audio**. Alerts appear under the caller's lines, and after the
    OTP demand and the threat the **hang-up banner** appears.
 3. Ask the assistant "do I have to share?". It answers privately.
-4. **End call.** After about a minute **Gemma 4 E2B** shows the summary, what the caller asked for and follow-ups.
+4. **End call.** The summary model (Qwen3, or Gemma 4 E2B if enabled) shows the summary, what the caller asked for and follow-ups.
    **Download call report** saves the shareable HTML.
 5. New session → *Client Priya asks about the website deal* → **Add sample** notes → play. Normal questions get auto-suggested
    replies grounded in the notes, and "never share your OTP" is correctly *not* flagged.

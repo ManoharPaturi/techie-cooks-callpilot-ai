@@ -161,10 +161,14 @@ def _gemma_installed() -> bool:
         return False
 
 
-@pytest.mark.skipif(not _gemma_installed(), reason="gemma4:e2b not installed")
-async def test_gemma_summarises_a_real_scam_call(monkeypatch):
-    """Real Gemma 4 E2B run: summary in English, the OTP request found on the caller's line, no task that obeys the caller."""
-    monkeypatch.setitem(assistant.llm.ROLE_MODEL, "summary", "gemma4:e2b")
+@requires_ollama
+@pytest.mark.parametrize("model", [
+    "qwen3:1.7b",  # default: one model in memory
+    pytest.param("gemma4:e2b", marks=pytest.mark.skipif(not _gemma_installed(), reason="gemma4:e2b not installed")),
+])
+async def test_after_call_summary_of_a_real_scam_call(monkeypatch, model):
+    """Real model run: summary in English, the OTP request found on the caller's line, no task that obeys the caller."""
+    monkeypatch.setitem(assistant.llm.ROLE_MODEL, "summary", model)
     async with httpx.AsyncClient() as client:
         out, err = await assistant.summarize(client, lines(SCAM), ALERTS)
     assert err is None, err

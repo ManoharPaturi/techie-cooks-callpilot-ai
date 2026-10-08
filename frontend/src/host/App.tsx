@@ -361,6 +361,10 @@ export default function App() {
             <p className="hint">Wear headphones so your microphone hears only you.</p>
           </section>
         </main>
+        <footer className="foot">
+          CallPilot AI · built by Techie Cooks for Hacktoberfest Hack Day Coimbatore 2026 · open source (MIT) ·
+          speech, scam checks and summaries run on this Mac with whisper.cpp, Qwen3 and Gemma 4.
+        </footer>
       </div>
     );
   }

@@ -64,9 +64,16 @@ export interface CallSummary {
   type: 'call.summary';
   session_id: string;
   summary: string;
+  caller_requests: CallerRequest[];
   tasks: TaskProposal[];
   model: string;
   fallback_reason: string | null;
+}
+
+export interface CallerRequest {
+  request: string;
+  transcript_ids: string[];
+  evidence: { id: string; source: string; text: string; start_ms: number }[];
 }
 
 export type AsrState = 'idle' | 'speaking' | 'processing' | 'dropped' | 'error';

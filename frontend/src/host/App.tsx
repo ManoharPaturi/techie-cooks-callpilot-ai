@@ -486,6 +486,19 @@ export default function App() {
                   : 'Writing a summary and follow-up tasks on this Mac…'}</p>}
               {summary && <>
                 <p className="summary">{summary.summary}</p>
+                {summary.caller_requests?.length > 0 && (
+                  <div className="asked">
+                    <h4>The caller asked you for</h4>
+                    <ul>
+                      {summary.caller_requests.map((r) => (
+                        <li key={r.transcript_ids.join()}>
+                          <b>{r.request}</b>
+                          {r.evidence[0] && <q title={`Caller at ${fmtTime(r.evidence[0].start_ms)}`}>{r.evidence[0].text}</q>}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 {!summary.fallback_reason && <p className="written-by">Written by {prettyModel(summary.model)} on this Mac after the call</p>}
                 {Object.values(tasks).length === 0 && <p className="empty">No follow-ups proposed.</p>}
                 {Object.values(tasks).map((t) => <TaskEditor key={t.id} task={t} />)}

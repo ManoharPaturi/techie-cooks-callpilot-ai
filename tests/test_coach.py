@@ -172,3 +172,36 @@ async def test_gemma_summarises_a_real_scam_call(monkeypatch):
     assert any("otp" in r["request"].lower() or "code" in r["request"].lower() or "password" in r["request"].lower()
                for r in out["caller_requests"]), out
     assert not any(assistant.task_follows_scammer(t["description"]) for t in out["tasks"])
+
+
+@pytest.mark.parametrize("question,expected", [
+    ("do I have to share the code?", True),
+    ("so do i have to share?", True),
+    ("should I tell him the OTP?", True),
+    ("is it safe to give my UPI PIN?", True),
+    ("can I read out the password to verify?", True),
+    ("should I share it?", True),
+    ("can I send it on Friday?", False),
+    ("should I share the product images today?", False),
+    ("what is this call about?", False),
+    ("Is bulk product upload included in the package?", False),
+])
+def test_share_questions_are_recognised(question, expected):
+    assert assistant.asks_whether_to_share(question) is expected
+
+
+async def test_share_question_always_starts_with_no(monkeypatch):
+    async def descriptive(*a, **k):  # seen live: describes the scam but never answers the question
+        return {"basis": "conversation", "transcript_ids": ["u-0005"], "note_paragraph_ids": [],
+                "text": "The caller is demanding an OTP to unlock your account and is applying pressure."}
+    monkeypatch.setattr(assistant.llm, "chat_json", descriptive)
+    async with httpx.AsyncClient() as client:
+        out, err = await assistant.coach(client, "do I have to share the code?", lines(SCAM), [], ALERTS)
+    assert err is None and out["text"].startswith("No. Never share") and "demanding an OTP" in out["text"]
+
+    async def already_no(*a, **k):
+        return {"basis": "general", "transcript_ids": [], "note_paragraph_ids": [], "text": "No, never share it."}
+    monkeypatch.setattr(assistant.llm, "chat_json", already_no)
+    async with httpx.AsyncClient() as client:
+        out, _ = await assistant.coach(client, "do I have to share the code?", lines(SCAM), [], ALERTS)
+    assert out["text"] == "No, never share it."

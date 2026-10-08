@@ -247,7 +247,7 @@ To try it, run `./start` (see [Setup and Usage](#setup-and-usage)). The dashboar
 
 ## Demo Video
 
-**Demo Video:** [Watch the demo (Google Drive)](https://drive.google.com/file/d/1tr-YCPlcRZCg-_VDLHltauBu6QbLJb4i/view?usp=sharing)
+**Demo Video:** [Watch the demo (Google Drive)](https://drive.google.com/file/d/1C9xOeb6ZI_60v0PfRLMf_PQNJRJNZdu7/view?usp=sharing)
 
 The video covers the fake-bank OTP call (alerts → hang-up banner), a private question to the assistant, a normal client call
 with a note-grounded answer, and the after-call summary and report.

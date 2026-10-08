@@ -1,6 +1,6 @@
 # CallPilot AI
 
-> A private AI copilot for phone calls that runs **entirely on your Mac**. It hears both sides, flags scam requests
+> A private AI copilot for phone calls that runs **entirely on your Mac**. It hears both sides, flags scam requests.
 > (OTP, UPI PIN, "digital arrest", money transfers) the moment they are spoken, and answers your questions from your own notes.
 > One small local model (Qwen3 1.7B) does it all, so it runs on an 8 GB laptop; **Gemma 4** can optionally write the after-call
 > summary. The caller never sees any of it.

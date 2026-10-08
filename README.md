@@ -440,15 +440,15 @@ fictional.
 - [x] Architecture included
 - [x] Technical implementation documented
 - [x] Work completed during the hackathon documented
-- [ ] Team contributions documented
+- [x] Team contributions documented
 - [x] Working application is functional
 - [x] Live application link added where applicable (N/A: local-first by design)
 - [x] Demo video added
 - [x] AI and open-source components documented
 - [x] Setup and usage instructions tested
 - [x] Challenges and learnings documented
-- [ ] Devpost submission completed
-- [ ] Devpost link added
+- [x] Devpost submission completed
+- [x] Devpost link added
 - [x] Credits added
 - [x] License added
 - [x] Repository is organized and complete

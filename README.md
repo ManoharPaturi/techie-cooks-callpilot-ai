@@ -230,9 +230,9 @@ Everything in this repository was built by the team during the Hack Day event. T
 ### Team Contributions
 
 - **Manohar P (Team Lead):** architecture, backend pipeline, local-model integration and benchmarks, live-call networking, repository and submission.
-- **Sainath B:** _to be filled in by the team_
-- **Pushpak K:** _to be filled in by the team_
-- **Laasya B:** _to be filled in by the team_
+- **Sainath B:** video upload and testing 
+- **Pushpak K:** Documentation for the code
+- **Laasya B:** Idea and phase planning
 
 ## Working Application
 

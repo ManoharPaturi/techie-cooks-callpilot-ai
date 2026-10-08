@@ -12,7 +12,7 @@ ROOT="$PWD"
 WHISPER_COMMIT="60c0be6ac8fa71b1a2ae2dd938a31a34a508e774"   # the whisper.cpp version CallPilot was tested with
 WHISPER_MODEL="base.en"
 LIVE_MODEL="${OLLAMA_MODEL:-qwen3:1.7b}"
-SUMMARY_MODEL="${SUMMARY_MODEL:-gemma4:e2b}"
+SUMMARY_MODEL="${SUMMARY_MODEL:-$LIVE_MODEL}"   # gemma4:e2b is optional: SUMMARY_MODEL=gemma4:e2b ./start
 OS="$(uname -s)"
 
 step() { printf "\n\033[1m▸ %s\033[0m\n" "$1"; }
@@ -104,7 +104,7 @@ else
     STARTED_OLLAMA=$!
     for _ in $(seq 1 20); do curl -s -m 1 127.0.0.1:11434/api/version >/dev/null && break; sleep 0.5; done
   fi
-  for m in "$LIVE_MODEL" "$SUMMARY_MODEL"; do
+  for m in $(printf "%s\n" "$LIVE_MODEL" "$SUMMARY_MODEL" | awk '!seen[$0]++'); do
     if ollama list | awk 'NR>1{print $1}' | grep -qx "$m"; then ok "$m"
     else
       echo "  downloading $m (this is the big one; retries on network errors)…"

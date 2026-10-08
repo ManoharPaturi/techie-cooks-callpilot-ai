@@ -62,7 +62,7 @@ for i in $(seq 1 90); do
 done
 
 STATUS=$(curl -s -m 2 "$URL/api/status")
-echo "$STATUS" | grep -q '"llm":{[^}]*"ok":true' && echo "  ✓ Local AI ready (Qwen3 live, Gemma 4 after the call)" || echo "  ! Local AI not ready yet (it may still be loading)"
+echo "$STATUS" | grep -q '"llm":{[^}]*"ok":true' && echo "  ✓ Local AI ready" || echo "  ! Local AI not ready yet (it may still be loading)"
 echo "$STATUS" | grep -q '"asr":{[^}]*"ok":true' && echo "  ✓ Whisper ready" || echo "  ! Whisper not ready yet"
 
 open_url "$URL"

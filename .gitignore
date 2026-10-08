@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+# Node
+node_modules/
+frontend/dist/
+# Secrets / local data — never commit
+.env
+*.pem
+*.key
+data/
+*.sqlite
+*.db
+# Models and private recordings
+*.bin
+*.gguf
+recordings/
+.DS_Store
+.run/
+frontend/dist-guest/

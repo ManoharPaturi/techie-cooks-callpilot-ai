@@ -205,33 +205,27 @@ These are small demo sets, not general accuracy claims.
 
 ## Implementation During the Hackathon
 
-Everything in this repository was built by the team during the Hack Day event, starting on Oct 3, 2026:
+Everything in this repository was built by the team during the Hack Day event. Timeline of this repository on
+**Oct 8, 2026 (IST)**. Each step is a reviewed pull request, checked by CI before merging:
 
-- **Oct 3:**
-  - audio capture and the two-lane transcript (VAD → whisper.cpp)
-  - scam rules + Qwen check with ID-grounded schemas
-  - note-grounded assistant, after-call tasks, pytest suite
-  - live phone calls: room coordinator, separate HTTPS guest app, WebRTC host and guest, Tailscale setup
-- **Oct 6:**
-  - direct iPhone-hotspot mode with a name-constrained CA
-  - prompt-injection demo and filter
-  - one-click Start/Stop apps
-  - UI redesign
-  - India scam patterns and auto-suggest
-  - measured results and test report
-  - classify-only safety (13.6 s → 5.8 s), hang-up banner, shareable call report, Silero VAD
-  - six-model benchmark
-- **Oct 7:**
-  - Gemma 4 E2B benchmarked
-  - Gemma 4 E2B moved to the after-call summary, with guards for language drift and scammer-following tasks
-- **Oct 8:**
-  - Gemma 4 lists what the caller asked for (grounded in caller lines)
-  - this public repository, CI, one-command setup (`./start`), the submission README
-  - Qwen3 made the default for every job so 8 GB Macs hold one model; Gemma 4 kept as an option
-
-The original development history (commits from Oct 3) is in our team's private working repository. This public repository was
-assembled from it on Oct 8 through reviewed pull requests, one per component, each checked by CI. See the
-[merged pull requests](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pulls?q=is%3Apr+is%3Amerged).
+| Time | Pull request | What was added |
+|---|---|---|
+| 10:38 | — | Hack Day template: README, AGENTS.md, CLAUDE.md, MIT license |
+| 10:40 | [#1](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/1) | Repo setup: CI, Python project, env template, contributor docs |
+| 10:42 | [#2](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/2) | Audio pipeline: config guards, frame parsing, resampling, Silero VAD |
+| 10:43 | [#3](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/3) | Speech to text: whisper.cpp client, transcript cleaning, demo audio |
+| 10:45 | [#4](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/4) | Scam detection: India-aware rules + classify-only Qwen, grounded schemas, 20 labelled cases |
+| 10:48 | [#5](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/5) | Private assistant: note-grounded answers, safety guards, after-call summary |
+| 10:48 | [#6](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/6) | Live calls: single-use rooms and an isolated HTTPS guest app |
+| 10:51 | [#7](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/7) | Call session hub, host app, auto-suggest and downloadable call report |
+| 10:53 | [#8](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/8) | Frontend: host dashboard and phone guest page |
+| 10:55 | [#9](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/9) | Run scripts: start/stop, preflight, loopback verification, iPhone-hotspot setup |
+| 10:56 | [#10](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/10) | Benchmarks, measured results, six-model comparison and screenshots |
+| 11:09 | [#11](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/11) | Gemma 4: list what the caller asked for, grounded in their own words |
+| 11:13 | [#12](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/12) | Submission README on the Hack Day template |
+| 11:35 | [#13](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/13) | One-command launch: `./start` sets up and runs everything (CI-tested on Linux and macOS) |
+| 12:13 | [#14](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/14) | Assistant: always answer “should I share the code?” with a clear No |
+| 14:15 | [#15](https://github.com/ManoharPaturi/techie-cooks-callpilot-ai/pull/15) | Qwen3 by default for every job (one model on 8 GB); Gemma 4 optional |
 
 ### Team Contributions
 

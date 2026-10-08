@@ -5,6 +5,7 @@ cd "$(dirname "$0")/.."
 [ -f .env ] && set -a && . ./.env && set +a
 WHISPER_CPP_DIR="${WHISPER_CPP_DIR:-../vendor/whisper.cpp}"
 OLLAMA_MODEL="${OLLAMA_MODEL:-qwen3:1.7b}"
+SUMMARY_MODEL="${SUMMARY_MODEL:-gemma4:e2b}"
 ok() { printf "  \033[32m✓\033[0m %s\n" "$1"; }
 bad() { printf "  \033[31m✗\033[0m %s\n" "$1"; }
 
@@ -21,6 +22,7 @@ for t in uv node npm ollama ffmpeg; do command -v $t >/dev/null && ok "$t" || ba
 echo "Services (loopback only)"
 curl -s -m 2 127.0.0.1:8080/ >/dev/null && ok "whisper.cpp on 127.0.0.1:8080" || bad "whisper.cpp not running"
 if curl -s -m 2 127.0.0.1:11434/api/tags | grep -q "\"$OLLAMA_MODEL\""; then ok "Ollama has $OLLAMA_MODEL"; else bad "Ollama not running or $OLLAMA_MODEL not pulled"; fi
+if curl -s -m 2 127.0.0.1:11434/api/tags | grep -q "\"$SUMMARY_MODEL\""; then ok "Ollama has $SUMMARY_MODEL (after-call summary)"; else echo "  - $SUMMARY_MODEL not pulled: summaries fall back to $OLLAMA_MODEL (ollama pull $SUMMARY_MODEL)"; fi
 curl -s -m 2 127.0.0.1:8765/api/status >/dev/null && ok "CallPilot host on 127.0.0.1:8765" || echo "  - CallPilot host not running"
 
 echo "Demo assets"

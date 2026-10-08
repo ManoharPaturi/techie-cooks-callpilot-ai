@@ -3,19 +3,25 @@
 set -u
 cd "$(dirname "$0")/.."
 [ -f .env ] && set -a && . ./.env && set +a
-WHISPER_CPP_DIR="${WHISPER_CPP_DIR:-../vendor/whisper.cpp}"
+if [ -z "${WHISPER_CPP_DIR:-}" ]; then  # built by scripts/setup.sh into ./vendor, or an existing ../vendor
+  if [ -x vendor/whisper.cpp/build/bin/whisper-server ]; then WHISPER_CPP_DIR=vendor/whisper.cpp; else WHISPER_CPP_DIR=../vendor/whisper.cpp; fi
+fi
 OLLAMA_MODEL="${OLLAMA_MODEL:-qwen3:1.7b}"
 SUMMARY_MODEL="${SUMMARY_MODEL:-gemma4:e2b}"
 ok() { printf "  \033[32m✓\033[0m %s\n" "$1"; }
 bad() { printf "  \033[31m✗\033[0m %s\n" "$1"; }
 
 echo "Hardware"
-MEM_GB=$(( $(sysctl -n hw.memsize) / 1073741824 ))
-echo "  $(uname -m), ${MEM_GB} GB RAM, macOS $(sw_vers -productVersion), free: $(df -h ~ | awk 'NR==2{print $4}')"
+if [ "$(uname -s)" = Darwin ]; then
+  MEM_GB=$(( $(sysctl -n hw.memsize) / 1073741824 )); OS_NAME="macOS $(sw_vers -productVersion)"
+else
+  MEM_GB=$(( $(awk '/MemTotal/{print $2}' /proc/meminfo) / 1048576 )); OS_NAME="$(uname -s) $(uname -r)"
+fi
+echo "  $(uname -m), ${MEM_GB} GB RAM, $OS_NAME, free: $(df -h ~ | awk 'NR==2{print $4}')"
 if [ "$MEM_GB" -le 8 ]; then echo "  profile: 8 GB -> whisper base.en + qwen3:1.7b"; else echo "  profile: 16 GB+ -> may try qwen3:4b after replay works"; fi
 
 echo "Tools"
-for t in uv node npm ollama ffmpeg; do command -v $t >/dev/null && ok "$t" || bad "$t missing"; done
+for t in uv node npm ollama cmake; do command -v $t >/dev/null && ok "$t" || bad "$t missing"; done
 [ -x "$WHISPER_CPP_DIR/build/bin/whisper-server" ] && ok "whisper-server built" || bad "whisper-server not built in $WHISPER_CPP_DIR"
 [ -f "$WHISPER_CPP_DIR/models/ggml-base.en.bin" ] && ok "ggml-base.en model" || bad "ggml-base.en model missing"
 

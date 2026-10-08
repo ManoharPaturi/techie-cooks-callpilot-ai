@@ -3,7 +3,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 [ -f .env ] && set -a && . ./.env && set +a
-WHISPER_CPP_DIR="${WHISPER_CPP_DIR:-../vendor/whisper.cpp}"
+if [ -z "${WHISPER_CPP_DIR:-}" ]; then  # built by scripts/setup.sh into ./vendor, or an existing ../vendor
+  if [ -x vendor/whisper.cpp/build/bin/whisper-server ]; then WHISPER_CPP_DIR=vendor/whisper.cpp; else WHISPER_CPP_DIR=../vendor/whisper.cpp; fi
+fi
 OLLAMA_MODEL="${OLLAMA_MODEL:-qwen3:1.7b}"
 HOST_BIND="${HOST_BIND:-127.0.0.1}"
 mkdir -p .run

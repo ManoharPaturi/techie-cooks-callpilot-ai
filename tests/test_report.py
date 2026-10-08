@@ -43,3 +43,22 @@ def test_clean_call_report():
     s = Session(id="s-2")
     _, html = report.build(s)
     assert "No suspicious requests were flagged" in html and "1930" not in html
+
+
+def test_report_shows_what_the_caller_asked_for_and_who_wrote_it():
+    s = make_session()
+    s.summary = "A caller claiming to be CBI said you were under digital arrest."
+    s.summary_model = "gemma4:e2b"
+    first = next(iter(s.utterances.values()))
+    s.caller_requests = [{"request": "stay on the <video> call", "transcript_ids": [first.id],
+                          "evidence": [{"id": first.id, "source": first.source, "text": first.text, "start_ms": first.start_ms}]}]
+    _, html = report.build(s)
+    assert "What the caller asked for" in html and "stay on the &lt;video&gt; call" in html
+    assert "Written by Gemma 4 E2B on this device" in html
+
+
+def test_report_does_not_credit_a_model_for_a_fallback_summary():
+    s = make_session()
+    s.summary = "Summary unavailable (local model error)."
+    _, html = report.build(s)
+    assert "Written by" not in html and "What the caller asked for" not in html

@@ -67,6 +67,8 @@ class Session:
     auto_suggest: bool = True
     last_proactive: float = 0.0
     summary: str | None = None
+    summary_model: str | None = None  # set only when the summary model actually wrote the summary
+    caller_requests: list[dict] = field(default_factory=list)
     started_at: float = field(default_factory=time.time)
     ended_at: float | None = None
     _utt_counter: itertools.count = field(default_factory=lambda: itertools.count(1))
@@ -341,6 +343,10 @@ class Hub:
                       for a in s.assessments.values() if a.alert == "danger"]
             result, fallback = await assistant.summarize(self.client, transcript, alerts)
             s.summary = result["summary"]
+            s.summary_model = None if fallback else llm.model_for("summary")
+            s.caller_requests = [{"request": r["request"], "transcript_ids": r["transcript_ids"],
+                                  "evidence": [e.model_dump() for e in s.evidence(r["transcript_ids"])]}
+                                 for r in result["caller_requests"]]
             for t in result["tasks"]:
                 tid = f"t-{next(s._task_counter):02d}"
                 s.tasks[tid] = TaskProposal(
@@ -351,6 +357,7 @@ class Hub:
                 asyncio.create_task(llm.warmup(self.client))  # reload the live model(s) for the next call
             await self.broadcast({
                 "type": "call.summary", "session_id": s.id, "summary": s.summary,
+                "caller_requests": s.caller_requests,
                 "tasks": [t.model_dump() for t in s.tasks.values()],
                 "model": llm.model_for("summary"), "fallback_reason": fallback,
             })

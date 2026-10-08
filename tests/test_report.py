@@ -34,7 +34,6 @@ def test_report_escapes_caller_speech():
 
 
 def test_report_excludes_private_data():
-    from backend.notes import NoteStore
     _, html = report.build(make_session())
     assert "Private notes and assistant suggestions are intentionally not included" in html
     assert "client_agreement" not in html and "Suggested reply" not in html

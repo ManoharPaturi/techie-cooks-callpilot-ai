@@ -247,7 +247,7 @@ To try it, run `./start` (see [Setup and Usage](#setup-and-usage)). The dashboar
 
 ## Demo Video
 
-**Demo Video:** _link will be added before submission_
+**Demo Video:** [Watch the demo (Google Drive)](https://drive.google.com/file/d/1tr-YCPlcRZCg-_VDLHltauBu6QbLJb4i/view?usp=sharing)
 
 The video covers the fake-bank OTP call (alerts → hang-up banner), a private question to the assistant, a normal client call
 with a note-grounded answer, and the after-call summary and report.
@@ -443,7 +443,7 @@ fictional.
 - [ ] Team contributions documented
 - [x] Working application is functional
 - [x] Live application link added where applicable (N/A: local-first by design)
-- [ ] Demo video added
+- [x] Demo video added
 - [x] AI and open-source components documented
 - [x] Setup and usage instructions tested
 - [x] Challenges and learnings documented
